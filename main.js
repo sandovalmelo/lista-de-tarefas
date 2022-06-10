@@ -2,15 +2,27 @@ const form = document.getElementById("form");
 const todoInput = document.getElementById("todo-input");
 const todosList = document.getElementById("todos");
 
-const todos = [
-	"Ajudar o peixe",
-	"Estudar na escola",
-	"Jogar pipa e soltar bola"
+let todos = [
+	{
+		id: 1020,
+		text: "Ajudar o peixe"
+	},
+	{
+		id: 2058,
+		text: "Estudar na escola"
+	},
+	{
+		id: 9405,
+		text: "Jogar pipa e soltar bola"
+	}
 ];
 
 function deleteTodo(event) {
-	const todoTarget = todos.findIndex((todo) => todo === event.target.innerText);
-	todos.splice(todoTarget, 1);
+	const todoId = Number(event.target.parentElement.dataset.id);
+	const newTodosArray = todos.filter((todo) => todo.id !== todoId);
+
+	todos = [...newTodosArray];
+
 	todosList.textContent = "";
 	renderTodos();
 }
@@ -18,7 +30,8 @@ function deleteTodo(event) {
 function renderTodos() {
 	todos.forEach((todo) => {
 		const li = document.createElement("li");
-		li.innerText = todo;
+		li.innerText = todo.text;
+		li.setAttribute("data-id", todo.id);
 
 		const deleteSpan = document.createElement("span");
 		deleteSpan.classList.add("material-symbols-outlined", "icon-delete");
@@ -33,13 +46,21 @@ function renderTodos() {
 	});
 }
 
+function generateTodoId() {
+	return Math.floor(Math.random() * 10000);
+}
+
 form.addEventListener("submit", (event) => {
 	event.preventDefault();
 	const todoContent = todoInput.value;
+	const todoId = generateTodoId();
 
-	if (todoContent && !todos.includes(todoContent)) {
-		console.log();
-		todos.push(todoContent);
+	const newTodo = { id: todoId, text: todoContent };
+
+	const includesNewTodo = todos.find((todo) => todo.text === newTodo.text);
+
+	if (newTodo.text && !includesNewTodo) {
+		todos.push(newTodo);
 		todosList.textContent = "";
 		renderTodos();
 	}
