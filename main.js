@@ -33,9 +33,8 @@ function renderTodos() {
 		li.innerText = todo.text;
 		li.setAttribute("data-id", todo.id);
 
-		const deleteSpan = document.createElement("span");
-		deleteSpan.classList.add("material-symbols-outlined", "icon-delete");
-		deleteSpan.innerText = "delete";
+		const deleteSpan = document.createElement("i");
+		deleteSpan.classList.add("ri-delete-bin-6-fill", "icon-delete");
 
 		deleteSpan.addEventListener("click", deleteTodo);
 
